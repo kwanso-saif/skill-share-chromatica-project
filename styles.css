@@ -36,10 +36,15 @@ body {
     top: 77%;
     left: 69%;
     transform: rotate(270deg);
-    /* aspect-ratio: 800/580; */
     width: auto;
     height: 20%;
     z-index: 3;
+}
+
+
+.eyes {
+    z-index: 3;
+    rotate: 270deg;
 }
 
 .splash-wrap {
@@ -97,6 +102,10 @@ body {
     white-space: nowrap; */
 }
 
+.hero-square video {
+    rotate: 270deg;
+}
+
 :root {
     --black: rgb(0, 0, 0);
     --white: rgb(255, 255, 255);
@@ -147,4 +156,144 @@ h1>.magic>.magic-text {
     background-clip: text;
     -webkit-text-fill-color: transparent;
     white-space: nowrap;
+}
+
+.lyrics-unlock {
+    margin-right: 10%;
+    margin-left: 10%;
+    margin-bottom: 10%;
+    background-color: #EDA0A6;
+    border-radius: 25px;
+}
+
+.flex-column {
+    flex-direction: column;
+}
+
+.barbed-wire {
+    width: 100%;
+    position: relative;
+}
+
+.lyrics {
+    font-size: 30px;
+    font-weight: 400;
+    font-family: NeutraText-Book;
+    line-height: calc(1.5);
+    color: var(--theme-ui-colors-text, #000000ff);
+    text-transform: uppercase;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    flex-shrink: 0;
+    box-sizing: border-box;
+    margin-top: 0px;
+    text-align: center;
+    visibility: hidden;
+}
+
+.lyrics-unlock-button {
+    display: none;
+}
+
+.pin-code {
+    padding: 0;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+
+}
+
+@media (max-width: 768px) {
+    .heart {
+        width: 70%;
+    }
+}
+
+.pin-code input {
+    margin-top: 55px;
+    border: none;
+    text-align: center;
+    width: 48px;
+    height: 48px;
+    font-size: 36px;
+    background-color: #F3F3F3;
+    margin-right: 5px;
+    border-radius: 10px;
+}
+
+
+.pin-code input:focus {
+    border: 1px solid #573D8B;
+    outline: none;
+}
+
+.shake-animation {
+    animation: shake 0.5s ease-in-out;
+}
+
+.arrow-button {
+    color: red;
+    background: none;
+    font-size: 36px;
+    color: inherit;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    outline: inherit;
+    margin-top: 55px;
+}
+
+
+@keyframes shake {
+    0% {
+        margin-left: 0rem;
+    }
+
+    10% {
+        margin-left: 1rem;
+    }
+
+    20% {
+        margin-left: -1rem;
+    }
+
+    30% {
+        margin-left: 1rem;
+    }
+
+    40% {
+        margin-left: -1rem;
+    }
+
+    50% {
+        margin-left: 1rem;
+    }
+
+    60% {
+        margin-left: -1rem;
+    }
+
+    70% {
+        margin-left: 1rem;
+    }
+
+    80% {
+        margin-left: -1rem;
+    }
+
+    90% {
+        margin-left: 1rem;
+    }
+
+    100% {
+        margin-left: 0rem;
+    }
+}
+
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
 }
