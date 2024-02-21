@@ -1,74 +1,105 @@
-import { useEffect, useState } from 'react';
-import './App.css'
-import SplashScreen from './SplashScreen'
+// import { useEffect, useState } from 'react';
+import Joyride, { CallBackProps, STATUS } from 'react-joyride';
+import './App.css';
+import { Step } from 'react-joyride';
+import { useSetState } from 'react-use';
+
+export function logGroup(type: string, data: any) {
+  console.groupCollapsed(type);
+  console.log(data);
+  console.groupEnd();
+}
+
+interface Props {
+  breakpoint: string;
+}
+
+interface State {
+  run: boolean;
+  steps: Step[];
+}
 
 function App() {
 
-  const [showSplash, setShowSplash] = useState(false);
+  // const [showSplash, setShowSplash] = useState(false);
   // const [pinDigits, setPinDigits] = useState(['', '', '']);
 
-  useEffect(() => {
-    const adjustCircleSize = () => {
-      const circle = document.getElementById("circle");
-      const advisorySticker = document.getElementById("advisory-sticker");
+  const [{ run, steps }, setState] = useSetState<State>({
+    run: false,
+    steps: [
+      {
+        content: <h2>Welcome To Our Website!</h2>,
+        locale: { skip: <strong aria-label="skip">S-K-I-P</strong> },
+        target: '.hero-section-circle',
+        placement: 'center',
+      },
 
-      const minDimension = Math.min(window.innerWidth, window.innerHeight);
+      {
+        content: (
+          <h3>Password: 000</h3>
+        ),
+        placement: 'top',
+        target: '.pin-code',
+        title: 'Our Mission',
+      },
 
-      if (circle && circle.style && circle.style.width) {
-        circle.style.width = `${minDimension}px`;
-      }
+      {
+        content: (
+          <div>
+            <h3>Preview Songs</h3>
+          </div>
+        ),
+        target: '.spotify iframe',
+        placement: 'top',
+        locale: { last: "Khatam Shudd" },
+      },
+    ],
+  });
 
-      if (circle && circle.style && circle.style.height)
-        circle.style.height = `${minDimension}px`;
 
-      if (advisorySticker && advisorySticker.style && advisorySticker.style.height) {
-        let currentHeight = parseInt(advisorySticker.style.height);
-        currentHeight -= minDimension;
-        advisorySticker.style.height = currentHeight + 'px';
-      }
+  const handleClickStart = (event: React.MouseEvent<HTMLElement>) => {
+    event.preventDefault();
 
-      if (advisorySticker && advisorySticker.style && advisorySticker.style.width) {
-        let currentHeight = parseInt(advisorySticker.style.height);
-        currentHeight -= minDimension + 40;
-        advisorySticker.style.width = currentHeight + 'px';
-      }
+    setState({
+      run: true,
+    });
+  };
 
-      const background = document.getElementById("hero-background");
 
-      if (window.innerWidth < window.innerHeight)
-        background!.style.height = `${window.innerWidth}px`;
-      else
-        background!.style.height = `${circle!.style.width + 5}px`;
+  const handleJoyrideCallback = (data: CallBackProps) => {
+    const { status, type } = data;
+    const finishedStatuses: string[] = [STATUS.FINISHED, STATUS.SKIPPED];
 
-      if (window.innerWidth < window.innerHeight && background && background.style && background.style.height) {
-        background.style.height = `${window.innerWidth}px`;
-      } else {
-        let height = circle && parseInt(circle.style.width);
-        if (height) height += 5;
-        if (background && background.style && background.style.height)
-          background.style.height = `${height! + 5} px`;
-      }
-    };
+    if (finishedStatuses.includes(status)) {
+      setState({ run: false });
+    }
 
-    window.onload = () => {
-      setTimeout(() => setShowSplash(false), 3000);
-      adjustCircleSize();
-    };
-
-    window.addEventListener('resize', adjustCircleSize);
-
-    return () => {
-      window.removeEventListener('resize', adjustCircleSize);
-    };
-  }, []);
+    logGroup(type, data);
+  };
 
   return (
     <>
-      {showSplash && <SplashScreen />}
+      <Joyride
+        callback={handleJoyrideCallback}
+        continuous
+        hideCloseButton
+        run={run}
+        scrollToFirstStep
+        showProgress
+        showSkipButton
+        steps={steps}
+        styles={{
+          options: {
+            zIndex: 1000,
+          },
+        }}
+      />
+
       < nav>
         <ul>
           <li><a href="#spotify">Preview</a></li>
           <li><a href="#lyrics-main">Unlock Lyrics</a></li>
+          <button onClick={handleClickStart}>JOYRIDE</button>
         </ul>
       </nav >
 
@@ -79,9 +110,9 @@ function App() {
           <img src="assets/parental-advisory-sticker.png" className="advisory-sticker" id="advisory-sticker"
             alt="Parental Advisory Explicit Content" />
 
-          <div className="hero-square">
+          <div className="hero-square" >
             <video poster="//gagadaily.com/images/banners/plasticdoll_poster.jpg"
-              src="//" loop muted>
+              src="'../assets/plasticdoll_video.mp4'" loop muted>
             </video>
           </div>
 
@@ -91,7 +122,7 @@ function App() {
 
       <img src="assets/barbed-wire.png" alt="Barbed Wire" className="barbed-wire" height="auto" />
 
-      <div style={{ marginBottom: "20%;" }} id="lyrics-main">
+      <div style={{ marginBottom: "20%" }} id="lyrics-main">
         <h1>
           <span className="magic"><span className="magic-text">LUST FOR LIFE</span>
           </span>
@@ -116,7 +147,7 @@ function App() {
         </div>
       </div>
 
-      <div className="lyrics-unlock flex-center flex-column" id="spotify">
+      <div className="lyrics-unlock flex-center flex-column spotify" id="spotify">
         <iframe style={{ borderRadius: '12px' }}
           src="https://open.spotify.com/embed/album/05c49JgPmL4Uz2ZeqRx5SP?utm_source=generator" width="100%"
           height="652"

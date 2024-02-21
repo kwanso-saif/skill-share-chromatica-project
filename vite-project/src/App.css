@@ -20,8 +20,8 @@ body {
 .hero-section-circle {
   background: repeating-conic-gradient(whitesmoke 0% 25%, #000611 0% 50%) 50% / 250px 50px;
   position: absolute;
-  width: 100%;
-  height: 100%;
+  width: 70%;
+  height: 70%;
   z-index: 1;
   top: 50%;
   left: 50%;
